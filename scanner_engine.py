@@ -105,8 +105,8 @@ if __name__ == "__main__":
         print(f"[-] Task file '{TASK_FILE}' not found. Exiting.")
         sys.exit(1)
     
-    VT_API_KEY = os.getenv("76c3d0b87388c013b3662c3cc3a4263f329ab03909866396fc2f950ea71c062b")
-    SHODAN_API_KEY = os.getenv("UrGQb0cnSw7hphwUjl4iM44PaBMP6IvK")
+    VT_API_KEY = os.getenv("Your VirusTotal API Key")
+    SHODAN_API_KEY = os.getenv("Your ShodanAPT key")
     
     nmap_data = run_nmap_scan(target_domain)
     nikto_data = run_nikto_scan(target_domain)
