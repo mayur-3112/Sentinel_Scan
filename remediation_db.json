@@ -1,0 +1,38 @@
+{
+  "nmap_ftp_21": {
+    "title": "FTP Service (21/tcp) Exposed",
+    "risk": "High",
+    "summary": "The File Transfer Protocol (FTP) is an unencrypted protocol susceptible to credential theft and unauthorized file access.",
+    "remediation": "If FTP is not essential for business operations, disable the service immediately. If required, restrict access to trusted IP addresses via firewall rules and enforce the use of SFTP (SSH File Transfer Protocol) with key-based authentication."
+  },
+  "nmap_ssh_22": {
+    "title": "SSH Service (22/tcp) Exposed",
+    "risk": "Medium",
+    "summary": "The Secure Shell (SSH) service is exposed. While secure, it is a common target for brute-force attacks.",
+    "remediation": "Disable password-based authentication and enforce key-based authentication only. Use a tool like fail2ban to automatically block IPs that fail to authenticate multiple times. Consider moving the service to a non-standard port."
+  },
+  "nmap_telnet_23": {
+    "title": "Telnet Service (23/tcp) Exposed",
+    "risk": "Critical",
+    "summary": "Telnet is an unencrypted remote access protocol. All communications, including usernames and passwords, are sent in cleartext.",
+    "remediation": "This service must be disabled immediately. Use SSH for all remote administration."
+  },
+  "nmap_http_80": {
+    "title": "Unencrypted HTTP Service (80/tcp) Detected",
+    "risk": "Medium",
+    "summary": "The web server supports unencrypted HTTP, which can expose sensitive data in transit.",
+    "remediation": "Implement TLS/SSL to enforce HTTPS. Configure the web server to automatically redirect all HTTP requests to HTTPS."
+  },
+  "nikto_sql_injection": {
+    "title": "Potential SQL Injection Vulnerability",
+    "risk": "Critical",
+    "summary": "The application may be vulnerable to SQL Injection (SQLi), which could allow an attacker to read, modify, or delete sensitive data from the database.",
+    "remediation": "Review the affected code to ensure all database queries are performed using parameterized statements (prepared statements). Do not construct queries by concatenating strings with user input. Implement input validation on all user-supplied data."
+  },
+  "nikto_xss": {
+    "title": "Potential Cross-Site Scripting (XSS) Vulnerability",
+    "risk": "High",
+    "summary": "The application may be vulnerable to Cross-Site Scripting (XSS), allowing an attacker to execute malicious scripts in the browsers of other users.",
+    "remediation": "Implement context-aware output encoding for all user-supplied data before it is rendered on a page. Use a Content Security Policy (CSP) to restrict the sources from which scripts can be loaded."
+  }
+}
