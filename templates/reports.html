@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+  <head><title>Scan Reports</title></head>
+  <body>
+    <h1>Available Reports</h1>
+    <ul>
+      {% for report in reports %}
+        <li><a href="/reports/{{ report }}">{{ report }}</a></li>
+      {% endfor %}
+    </ul>
+    <a href="/">Back to Dashboard</a>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head><title>Sentinel Scan C2</title></head>
+  <body>
+    <h1>Sentinel Scan C2 Dashboard</h1>
+    <form method="post">
+      <input type="text" name="target" placeholder="Enter target domain (e.g., example.com)" size="50">
+      <input type="submit" value="Start Scan">
+    </form>
+    {% if message %}
+      <p><b>{{ message }}</b></p>
+    {% endif %}
+    <br>
+    <a href="/reports">View Generated Reports</a>
+  </body>
+</html>
