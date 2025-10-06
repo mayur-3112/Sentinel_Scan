@@ -1,3 +1,4 @@
 dnspython
-fpdf2
-requests
+fpdf2==2.5.7
+requests==2.28.1
+Flask==2.0.1
