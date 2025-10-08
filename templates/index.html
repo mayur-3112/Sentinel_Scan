@@ -1,16 +1,102 @@
 <!doctype html>
 <html>
-  <head><title>Sentinel Scan C2</title></head>
+  <head>
+    <title>Sentinel Scan C2</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+      }
+      .container {
+        background: white;
+        padding: 2em 3em;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        width: 500px;
+      }
+      h1 { color: #4CAF50; margin-bottom: 1em; }
+      /* --- NEW STATUS PANEL STYLES --- */
+      #status-panel {
+        padding: 12px;
+        margin-bottom: 1em;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+      .status-idle { background-color: #e7f3fe; border-left: 6px solid #2196F3; }
+      .status-scanning { background-color: #fffbe6; border-left: 6px solid #ffc107; }
+
+      input[type="text"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+      input[type="submit"] {
+        width: 100%; background-color: #4CAF50; color: white;
+        padding: 14px 20px; margin: 8px 0; border: none;
+        border-radius: 4px; cursor: pointer; font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+      input[type="submit"]:hover { background-color: #45a049; }
+      /* --- STYLE FOR DISABLED BUTTON --- */
+      input[type="submit"]:disabled { background-color: #cccccc; cursor: not-allowed; }
+      a { color: #4CAF50; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 1em; }
+      a:hover { text-decoration: underline; }
+    </style>
+  </head>
   <body>
-    <h1>Sentinel Scan C2 Dashboard</h1>
-    <form method="post">
-      <input type="text" name="target" placeholder="Enter target domain (e.g., example.com)" size="50">
-      <input type="submit" value="Start Scan">
-    </form>
-    {% if message %}
-      <p><b>{{ message }}</b></p>
-    {% endif %}
-    <br>
-    <a href="/reports">View Generated Reports</a>
+    <div class="container">
+      <h1>Sentinel Scan C2 Dashboard</h1>
+
+      <div id="status-panel" class="status-idle">
+        STATUS: IDLE
+      </div>
+
+      <form method="post" id="scan-form">
+        <input type="text" id="target-input" name="target" placeholder="Enter target (e.g., testphp.vulnweb.com)" required>
+        <input type="submit" id="submit-button" value="Initiate Reconnaissance">
+      </form>
+
+      <a href="/reports">Access Intelligence Reports</a>
+    </div>
+
+    <script>
+      const statusPanel = document.getElementById('status-panel');
+      const submitButton = document.getElementById('submit-button');
+      const targetInput = document.getElementById('target-input');
+
+      function updateStatus() {
+        fetch('/status')
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'scanning') {
+              statusPanel.className = 'status-scanning';
+              statusPanel.innerHTML = `STATUS: SCANNING <strong>${data.target}</strong>...`;
+              submitButton.disabled = true;
+              targetInput.disabled = true;
+            } else {
+              statusPanel.className = 'status-idle';
+              statusPanel.innerHTML = 'STATUS: IDLE. Ready for new tasking.';
+              submitButton.disabled = false;
+              targetInput.disabled = false;
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching status:', error);
+            statusPanel.className = 'status-idle';
+            statusPanel.textContent = 'STATUS: Connection Error';
+          });
+      }
+
+      // Check status every 3 seconds
+      setInterval(updateStatus, 3000);
+      // Run on page load as well
+      document.addEventListener('DOMContentLoaded', updateStatus);
+    </script>
   </body>
 </html>

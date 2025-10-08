@@ -1,13 +1,49 @@
 <!doctype html>
 <html>
-  <head><title>Scan Reports</title></head>
+  <head>
+    <title>Scan Reports</title>
+    <style>
+      body { font-family: sans-serif; margin: 2em; }
+      table { width: 100%; border-collapse: collapse; }
+      th, td { border: 1px solid #dddddd; text-align: left; padding: 8px; }
+      tr:nth-child(even) { background-color: #f2f2f2; }
+      th { background-color: #4CAF50; color: white; }
+      a, .button-link { text-decoration: none; color: #0066cc; }
+      .delete-button {
+        background-color: #f44336; color: white;
+        border: none; padding: 5px 10px;
+        cursor: pointer; border-radius: 4px;
+      }
+    </style>
+  </head>
   <body>
-    <h1>Available Reports</h1>
-    <ul>
-      {% for report in reports %}
-        <li><a href="/reports/{{ report }}">{{ report }}</a></li>
-      {% endfor %}
-    </ul>
+    <h1>Available Intelligence Reports</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Target</th>
+          <th>Report File</th>
+          <th>Date Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for report in reports %}
+          <tr>
+            <td>{{ report.target }}</td>
+            <td>{{ report.filename }}</td>
+            <td>{{ report.date }}</td>
+            <td>
+              <a href="/reports/{{ report.filename }}">Download</a> |
+              <form action="/reports/delete/{{ report.filename }}" method="post" style="display:inline;">
+                <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this report?');">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br>
     <a href="/">Back to Dashboard</a>
   </body>
 </html>
